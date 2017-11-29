@@ -1,0 +1,48 @@
+ //NOT:CMD EKRANINI YATAY OLARAK GENİŞLEMEDİĞİM İÇİN KALAN ANA PARA BORCU BİR ALT SATIRA KAYMIŞTIR
+#include <stdio.h>
+#include <locale.h> //türkçe karakterler kullanmak için
+float UsluIfade(float,int);
+float Taksit_Tutari(int,int,float);
+int main()
+{
+	setlocale(LC_ALL, "Turkish"); //türkçe karakterler kullanmak için
+	int Kredi_Miktari,Taksit_Sayi,Sayac=0;
+	float Faiz_Orani,Taksit_Tutar,Kalan_AnaParaBorcu,Odenen_AnaPara,Odenen_FaizTutari,Toplam_KrediOdeme=0,Odenen_FazlaPara=0,Toplam_FazlaOdenenPara=0;
+	printf("Toplam kredi Miktarı: ");
+	scanf("%d",&Kredi_Miktari);
+	Kalan_AnaParaBorcu=Kredi_Miktari;
+	printf("Faiz Oranı: ");
+	scanf("%f",&Faiz_Orani);
+	Faiz_Orani=Faiz_Orani/100;	//faiz oranını %lik dilime çevirdik
+	printf("Taksit Sayısı: ");
+	scanf("%d",&Taksit_Sayi);
+	printf("Taksit No | Taksit Tutarı | Ödenen Faiz Tutarı | Ödenen Ana Para Tutarı | Kalan Ana Para Borcu\n");
+	while(Taksit_Sayi>Sayac)	//kullanıcın girdiği taksit sayısı kadar devam eder
+	{
+		Taksit_Tutar=Taksit_Tutari(Kredi_Miktari,Taksit_Sayi,Faiz_Orani); //taksit tutarını fonksiyon yardımıyla hesapladık
+		Odenen_FaizTutari=Kalan_AnaParaBorcu*Faiz_Orani;	//Ödenen faiz tutarını hesapladık
+		Odenen_AnaPara=Taksit_Tutar-Odenen_FaizTutari;		//Ödenen ana parayı hesapladık
+		Kalan_AnaParaBorcu=Kalan_AnaParaBorcu-Odenen_AnaPara;	//Kalan ana para borcunu hesapladık
+		Odenen_FazlaPara=Taksit_Tutar-Odenen_AnaPara;	//Toplam fazla ödenen parayı hesaplak için kullandık 
+		Sayac+=1; //Taksit sayısı kadar +1 artacak
+		Toplam_FazlaOdenenPara+=Odenen_FazlaPara;	//alınan kredi'nin faizle birlikte fazla ödenen para miktari
+		printf("%d		%.2f		%.2f		%.2f		%.2f\n",Sayac,Taksit_Tutar,Odenen_FaizTutari,Odenen_AnaPara,Kalan_AnaParaBorcu);
+	}
+		printf("\nAylık Ödemeniz: 	%.2f",Taksit_Tutar); //aylık ödeme taksit tutara eşit olduğu için direkman taksit tutarı yazdırdık
+		printf("\nToplam Kredi Ödemeniz:	 %.2f\n",Kredi_Miktari+Toplam_FazlaOdenenPara);//alınan kredi ve fazla ödenen paranın toplamı
+		system("pause"); //exe'den çalıştırdığımızda cmd ekranının direk kapanmaması için kod
+}
+float UsluIfade(float x,int y) //uslu ifade hesaplayan fonksiyon
+{
+	float sonuc=1;
+	while(y>=1)
+	{
+		sonuc=x*sonuc;
+		y=y-1;
+	}
+	return sonuc;
+}
+float Taksit_Tutari(int Kredi_Tutari,int Taksit_Sayi,float Faiz_Orani) //taksit tutarını hesaplayan fonksiyon
+{
+	return Kredi_Tutari*((Faiz_Orani*UsluIfade((Faiz_Orani+1),Taksit_Sayi))/(UsluIfade((Faiz_Orani+1),Taksit_Sayi)-1));
+}
