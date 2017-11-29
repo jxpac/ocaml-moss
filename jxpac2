@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include<locale.h> //türkçe karakterler için kütüphane
+int main()
+{
+	setlocale(LC_ALL, "Turkish"); //türkçe karakterler kullanmak için
+	int Baslangic,Carpan,Bitis,Hak=3,Cevap;
+	printf("Başlangiç Değerini Giriniz:");
+	scanf("%d",&Baslangic);
+	while(1)
+	{
+		printf("Bitiş Degerini Giriniz:");
+		scanf("%d",&Bitis);	
+		if(Bitis>Baslangic)
+			break;
+		else
+			printf("Bitiş Değeri Başlangiç Değerinden Büyük Olmalıdır!\n");	
+	}
+	while(1)
+	{
+		printf("Çarpan Değerini Giriniz:");
+		scanf("%d",&Carpan);
+		if(Carpan>2&&Carpan<10)
+			break;
+		else
+			printf("Çarpan Değeri 2 İle 10 Arasında Olmalıdır!\n");
+	}
+	for(Baslangic;Baslangic<=Bitis;Baslangic=Baslangic*Carpan)
+	{	
+		printf("%d * %d Sonuçu Nedir?\n",Baslangic,Carpan);
+		scanf("%d",&Cevap);
+		if(Cevap!=(Baslangic*Carpan))
+		{
+			Hak-=1;
+			printf("Yanlış Bildiniz. Kalan Hakkınız %d\n",Hak);
+			Baslangic=Baslangic/Carpan;
+		}
+		if(Hak==0)
+		{
+			printf("Oyunu Kaybettiniz.");
+			break;
+		}
+
+	}
+	if(Baslangic>Bitis)
+		printf("Oyunu Kazandınız.");
+	return 0;
+}
